@@ -6,26 +6,46 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
+//
+     String folderPath = "data/files";
+      File folder = new File(folderPath);
+//        File[] files = folder.listFiles();
+//        for(File file: files){
+//            System.out.println(file.getName());
+//        }
+        //System.out.println(Arrays.stream(files).count());
+        //System.out.println(folder.getName());
+       getFolderSize(folder);
+
+
+        //htmlParser();
+    }
+    public static void getFolderSize(File folder) {
+        if (folder.isFile()) {
+            System.out.print(folder.getName());
+            System.out.println("  " + folder.getPath());
+        }
+
+        File[] files = folder.listFiles();
+        if(files == null){
+            return;
+        }
+        for (File file : files) {
+            //System.out.println(file.getName());
+            getFolderSize(file);
+        }
+
+    }
+    public static void htmlParser(){
         Document doc = null;
         try {
             doc = Jsoup.connect("https://skillbox-java.github.io").get();
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        List<String> el = doc.select(".js-metro-line").eachText();
-//        for (String str:el  ) {
-//            System.out.println(str);
-//        }
-//        List<String> el1 = doc.select(".js-metro-line").eachAttr("data-line");
-//        System.out.println(el1.size());
-//        for (String str:el1  ) {
-//            System.out.println(str);
-//        }
         //находим все элементы соответсвующие классу ".js-metro-line"
         Elements elements = doc.select(".js-metro-line");
 
@@ -44,8 +64,6 @@ public class Main {
                 System.out.println("Линия " + sub + "   станция " + str.text());
             }
         }
-        //System.out.println(el.size());
-        //System.out.println(el);
-
     }
+
 }
